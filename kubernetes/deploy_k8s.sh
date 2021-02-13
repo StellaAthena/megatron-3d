@@ -13,9 +13,9 @@ WD_BRANCH=$(git branch  --no-color --show-current)
 WD_BRANCH="${WD_BRANCH/\//-}"  # remove forward slashes and replace with underscore
 if [ -n "$WD_BRANCH" ]
 then
-      DEFAULT_IMAGE="leogao2/megatron-3d:$WD_BRANCH"
+      DEFAULT_IMAGE="leogao2/gpt-neox:$WD_BRANCH"
 else
-      DEFAULT_IMAGE="leogao2/megatron-3d:main"
+      DEFAULT_IMAGE="leogao2/gpt-neox:main"
 fi
 
 BRANCH=${1:-main}
@@ -23,7 +23,8 @@ N_NODES=${2:-4}
 SUFFIX=${3:-$(whoami)}
 IMAGE=${4:-$DEFAULT_IMAGE}
 
-DEPLOYMENT_NM='megatron-'"$SUFFIX"
+DEPLOYMENT_NM='neox-'"$SUFFIX"
+
 WD=`dirname "$BASH_SOURCE"`
 
 echo BRANCH $BRANCH. N-NODES $N_NODES. DEPLOYMENT NAME $DEPLOYMENT_NM. DOCKER IMAGE $IMAGE.
@@ -37,8 +38,12 @@ fi
 
 # Generate ssh key pair and post start script
 echo Generate SSH key pair
+<<<<<<< HEAD
 rm $WD/id_rsa*
 ssh-keygen -t rsa -f $WD/id_rsa -N "" 
+=======
+ssh-keygen -t rsa -f $WD/id_rsa -N ""
+>>>>>>> gpt-neox/main
 
 post_start_script="
 cp /secrets/id_rsa.pub /root/.ssh/authorized_keys;
@@ -47,7 +52,7 @@ chmod 700 /root/.ssh;
 chown -R root /root/.ssh;
 rm -r /app/*;
 cd /app;
-git clone https://github.com/EleutherAI/megatron-3d.git .;
+git clone $BRANCH https://github.com/EleutherAI/gpt-neox.git .;
 cd megatron-3d;
 git checkout $BRANCH;
 apt-get update -y;

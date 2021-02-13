@@ -26,4 +26,3 @@ RUN echo 'deb http://archive.ubuntu.com/ubuntu/ focal main restricted' >> /etc/a
 RUN sudo apt-get update -y && sudo apt-get install -y libpython3-dev
 
 WORKDIR /app
-
